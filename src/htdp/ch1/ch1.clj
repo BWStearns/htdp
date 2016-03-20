@@ -231,29 +231,38 @@
     (<= amount 480) (+ (* 0.15 (- amount 240)) 0)
     :else (+ (* 0.28 (- amount 480)) (graduated-tax 480))))
 
-(defn taxable
-  "Returns the taxable dollars ina a given bracket range
-  i.e. if I have 110 dollars, 10 dollars are taxable in the 100+ range"
+(defn amount-in-bracket
+  "Returns the dollars in a a given bracket range
+  i.e. if I have 110 dollars, 10 dollars are in the 100+ bracket"
   [amount [lower upper]]
   (max
     (if upper
-      ((min (- amount lower) (- upper lower)))
+      (min (- amount lower) (- upper lower))
       (- amount lower))
     0))
+
+(defn sum-bracketed-percentages
+  "Returns sum of bracketed percentages for a bracket set and a principal"
+  [principal bracket-set]
+  (reduce-kv (fn [total rate bracket]
+               (+ total (* rate (amount-in-bracket principal bracket))))
+             0
+             bracket-set))
 
 (defn grad-tax
   "A more generalized graduated-tax function."
   [amount]
   (let [brackets {0.0 [0 240] 0.15 [240 480] 0.28 [480]}]
-    (reduce-kv (fn [total rate bracket]
-                 (+ total (* rate (taxable amount bracket))))
-                 0
-                 brackets)))
+    (sum-bracketed-percentages amount brackets)))
 
 ;; /TANGENT
+;; Oh.... that was the next question, kind of....
 
-
-
+(defn pay-back
+  "Ex 4.4.3"
+  [spent]
+  (let [brackets {0.0025 [0 500] 0.0050 [500 1500] 0.0075 [1500 2500] 0.01 [2500]}]
+    (sum-bracketed-percentages spent brackets)))
 
 
 

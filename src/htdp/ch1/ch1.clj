@@ -255,8 +255,7 @@
   (let [brackets {0.0 [0 240] 0.15 [240 480] 0.28 [480]}]
     (sum-bracketed-percentages amount brackets)))
 
-;; /TANGENT
-;; Oh.... that was the next question, kind of....
+;; /TANGENT -- Oh.... that was the next question, kind of....
 
 (defn pay-back
   "Ex 4.4.3"
@@ -265,6 +264,17 @@
     (sum-bracketed-percentages spent brackets)))
 
 
+(comment "NOTE for Section 5: Seems that DrScheme's symbols are a little different than
+  Clojure's. I'm not going to mess around with the `symbol=?` stuff and I'm
+  just going to be using maps instead of `cond` which seems a bit silly")
+
+
+(defn check-guess
+  "Ex 5.1.2"
+  [guess target]
+  (cond (< guess target) :TooSmall
+        (= guess target) :Perfect
+        (> guess target) :TooLarge))
 
 
 
@@ -275,6 +285,12 @@
 
 
 
+
+
+
+
+
+(comment "Below here is just random scratches")
 
 (defn f-by-g [f g]
   (comment "

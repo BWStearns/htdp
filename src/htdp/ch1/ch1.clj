@@ -277,11 +277,44 @@
         (> guess target) :TooLarge))
 
 
+;; Ex 6.1
+(defrecord Posn [x y])
+
+(defrecord Pixl [pos color])
+
+(defn display-pixl [pixl]
+  ((:color pixl) {
+                   :black " "
+                   :red   "R"
+                   :blue  "B"
+                   :green "G"}))
+
+(defn display-row [row]
+  (map display-pixl row))
+
+(defn display-canvas [canv]
+  (map display-row canv))
+
+(defn print-canvas [canv]
+  (map println (display-canvas canv)))
+
+(defn start
+  "Ex 6.2.1 - Creates a x/y sized grid of blank spots for pixels"
+  [w h]
+  (into [] (repeat h (into [] (repeat w nil)))))
+
+(defn start
+  "Ex 6.2.1 - Creates a x/y sized grid of blank spots for pixels"
+  [w h]
+  (partition h (for [y (range h) x (range w)] (Pixl. (Posn. x y) :black))))
 
 
-
-
-
+(defn distance-to-0
+  "Ex 6.1"
+  [pos]
+  (Math/sqrt
+    (+ (* (:x pos) (:x pos))
+       (* (:y pos) (:y pos)))))
 
 
 
@@ -316,3 +349,8 @@
 
 
 
+(reduce-kv
+  (fn [m k v]
+    (assoc m k (count (filter #(contains? % "b") v))))
+  {}
+  data)

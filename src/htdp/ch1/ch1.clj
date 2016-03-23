@@ -277,9 +277,33 @@
         (> guess target) :TooLarge))
 
 
-;; Ex 6.1
+;; Ex 6.1 - let's define some abstract shapes!
 (defrecord Posn [x y])
 
+(defprotocol Shape
+  (area [s] "Calculates the area of a shape")
+  (perimeter [s] "Calculates the perimeter of a shape"))
+
+(defrecord Line [start end])
+
+;; start is the top left position
+(defrecord Rect [start width height]
+  Shape
+  (area [this] (* width height))
+  (perimeter [this] (* 2 (+ width height))))
+
+
+;; center is a Posn, radius a number
+(defrecord Circle [center radius]
+  Shape
+  (area [this] (* PI (* radius radius)))
+  (perimeter [this] (* 2 PI radius)))
+
+
+
+
+;; The more I think about it the more Pixl is a display element that shouldn't
+;; mix with the shapes that much
 (defrecord Pixl [pos color])
 
 (defn display-pixl [pixl]
@@ -298,23 +322,63 @@
 (defn print-canvas [canv]
   (map println (display-canvas canv)))
 
-(defn start
-  "Ex 6.2.1 - Creates a x/y sized grid of blank spots for pixels"
-  [w h]
-  (into [] (repeat h (into [] (repeat w nil)))))
 
 (defn start
-  "Ex 6.2.1 - Creates a x/y sized grid of blank spots for pixels"
+  "Ex 6.2.1 - Creates a blank x/y sized grid of blank spots for pixels"
   [w h]
   (partition h (for [y (range h) x (range w)] (Pixl. (Posn. x y) :black))))
 
 
 (defn distance-to-0
-  "Ex 6.1"
+  "Ex 6.2.1"
   [pos]
   (Math/sqrt
     (+ (* (:x pos) (:x pos))
        (* (:y pos) (:y pos)))))
+
+
+(defn draw-solid-line
+  "Ex 6.2.1"
+  [start end]
+  nil)
+
+;; This whole exercise section seems to really actually need a teachpack. I
+;; think I'll go look on how to make those soon.
+;; TODO: MAKE A GUI TIE-IN FOR THIS PART, DOING IT IN PIXEL ART TURNED OUT TO
+;; BE STUPID
+
+
+(comment "So the define-struct bit seems to pretty much be the defrecord for
+  clojure, so it will be treated as such. Keep in mind that the instantiation
+  in clojure is done either by `(Mystruct. arg1 arg2...)` there is no
+  auto-generated `make-my-struct` or `my-struct-arg` functions.")
+
+
+;; 6.3
+
+
+(defrecord Entry [fullname zip phone])
+
+
+;; 6.3.3
+
+(defrecord Fighter [designation acceleration top-speed max-range])
+
+(defn within-range [fighter dist]
+  (>= (:max-range fighter) dist))
+
+(defn reduce-range [fighter]
+  (update fighter :max-range #(* 0.80 %)))
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -337,13 +401,6 @@
   (fn [coll]
     (let [kv (zipmap (map g coll) coll)]
       (get kv (apply f (keys kv))))))
-
-
-
-
-
-
-
 
 
 

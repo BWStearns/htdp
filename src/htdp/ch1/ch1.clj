@@ -370,6 +370,36 @@
 (defn reduce-range [fighter]
   (update fighter :max-range #(* 0.80 %)))
 
+;; 6.4.1
+;; Maybe go and use Schema for all of these?
+
+(defrecord Movie [title producer])
+
+(defrecord Boyfriend [fullname hair eyes phone])
+
+(defrecord Cheerleader [fullname number])
+
+(defrecord CD [artist title price])
+
+(defrecord Sweater [material price producer])
+
+
+;; 6.4.2
+
+(defrecord Elapsed-Since-Midnight [hours minutes seconds])
+
+;; 6.4.3
+
+(defrecord TLWords [f s t])
+
+
+
+;; 6.5
+
+(defrecord Student [firstname lastname teacher])
+
+
+
 
 
 

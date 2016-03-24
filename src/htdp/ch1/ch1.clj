@@ -396,17 +396,17 @@
 
 ;; 6.5
 
-(defrecord Student [firstname lastname teacher])
+(defrecord Student [lastname firstname teacher])
 
+(defn subst-teacher [student sub-teacher]
+  (assoc student :teacher sub-teacher))
 
+;; 6.5.2
 
-
-
-
-
-
-
-
+(defn time->seconds [t]
+  (+ (* 3600 (:hours t))
+     (* 60 (:minutes t))
+     (:seconds t)))
 
 
 
